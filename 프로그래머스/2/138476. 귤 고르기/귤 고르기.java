@@ -24,11 +24,11 @@ class Solution {
         for (int i = 0; i < boxes.length; i++) {
             removeCnt -= boxes[i];
             if (removeCnt < 0) {
-                removeCnt = i;
+                removeBox = i;
                 break;
             }
         }
-        answer = boxes.length - removeCnt;
+        answer = boxes.length - removeBox;
         return answer;
     }
 }
