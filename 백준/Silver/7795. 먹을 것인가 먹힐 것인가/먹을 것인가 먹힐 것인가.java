@@ -10,8 +10,8 @@ public class Main {
 
     int T = sc.nextInt();
 
-    for (int i = 0; i < T; i++) {
-      int count = 0;
+    while(T-- > 0) {
+      // int count = 0;
       int N = sc.nextInt();
       int M = sc.nextInt();
 
@@ -24,13 +24,21 @@ public class Main {
       Arrays.sort(A);
       Arrays.sort(B);
 
-      for (int j = 0; j < A.length; j++) {
-        for (int k = 0; k < B.length; k++) {
-          if (A[j] > B[k]) count++;
-          else break;
-        }
+//      for (int j = 0; j < A.length; j++) {
+//        for (int k = 0; k < B.length; k++) {
+//          if (A[j] > B[k]) count++;
+//          else break;
+//        }
+//      }
+      int bi = 0;
+      int answer = 0;
+      for (int j = 0; j < N; j++) {
+        // A 포인터가 진행하면서
+        // B 포인터도 진행하는데, A포인터가 가리키는 숫자보다 B포인터가 가리키는 숫자가 크거나 같을때까지 반복
+        while (bi < M && B[bi] < A[j]) bi++;
+        answer += bi;
       }
-      System.out.println(count);
+      System.out.println(answer);
     }
   }
 }
