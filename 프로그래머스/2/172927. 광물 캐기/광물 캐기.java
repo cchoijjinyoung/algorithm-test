@@ -8,20 +8,17 @@ class Solution {
             {5, 1, 1},
             {25, 5, 1}
         };
-        List<Mineral> list = new ArrayList<>();
         
+        List<Mineral> list = new ArrayList<>();
         int size = Arrays.stream(picks).sum();
         
         for (int i = 0; i < size; i++) {
-            
             int diamond = 0;
             int iron = 0;
             int stone = 0;
             
             for (int j = i * 5; j < i * 5 + 5; j++) {
-                if (j >= minerals.length) {
-                    break;
-                }
+                if (j >= minerals.length) break;
                 
                 if (minerals[j].startsWith("d")) {
                     diamond += tired[0][0];
@@ -39,31 +36,24 @@ class Solution {
             }
             list.add(new Mineral(diamond, iron, stone));
         }
-        list.sort((m1, m2) -> m2.stone - m1.stone);
         
+        list.sort((a, b) -> b.stone - a.stone);
+
         for (int i = 0; i < list.size(); i++) {
             if (picks[0] > 0) {
-                picks[0]--;
                 answer += list.get(i).diamond;
-                continue;
-            }
-            
-            if (picks[1] > 0) {
-                picks[1]--;
+                picks[0]--;
+            } else if (picks[1] > 0) {
                 answer += list.get(i).iron;
-                continue;
-            }
-            
-            if (picks[2] > 0) {
-                picks[2]--;
+                picks[1]--;
+            } else if (picks[2] > 0) {
                 answer += list.get(i).stone;
-                continue;
+                picks[2]--;
             }
         }
         return answer;
-        
     }
-    
+        
     class Mineral {
         int diamond;
         int iron;
@@ -75,5 +65,4 @@ class Solution {
             this.stone = stone;
         }
     }
-        
 }
