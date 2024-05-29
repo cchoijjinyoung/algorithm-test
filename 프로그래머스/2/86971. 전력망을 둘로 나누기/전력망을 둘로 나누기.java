@@ -24,7 +24,7 @@ class Solution {
 
             // 각 부분의 송전탑 개수 구함
             boolean[] visited = new boolean[n + 1];
-            int countA = dfs(a, graph, visited);
+            int countA = bfs(a, graph);
             int countB = n - countA;
 
             // 최소 차이 갱신
@@ -38,14 +38,25 @@ class Solution {
         return minDifference;
     }
 
-    private int dfs(int node, List<List<Integer>> graph, boolean[] visited) {
-        int count = 1;
-        visited[node] = true;
-        for (int neighbor : graph.get(node)) {
-            if (!visited[neighbor]) {
-                count += dfs(neighbor, graph, visited);
+    private int bfs(int start, List<List<Integer>> graph) {
+        int result = 0;
+        Queue<Integer> q = new LinkedList<>();
+        boolean[] visited = new boolean[graph.size()];
+        q.offer(start);
+        visited[start] = true;
+        result++;
+        
+        while (!q.isEmpty()) {
+            int node = q.poll();
+            
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    q.offer(neighbor);
+                    visited[neighbor] = true;
+                    result++;
+                }
             }
         }
-        return count;
+        return result;
     }
 }
