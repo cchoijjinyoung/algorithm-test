@@ -5,15 +5,17 @@ class Solution {
         int answer = 0;
         Arrays.sort(people);
         
-        int weight = 0;
-        int min = 0;
-        for (int i = people.length - 1; i >= min; i--) {
-            if (people[i] + people[min] <= limit) {
-                answer++;
-                min++;
+        int lt = 0;
+        int rt = people.length - 1;
+        
+        while (lt <= rt) {
+            if (people[lt] + people[rt] <= limit) {
+                lt++;
+                rt--;
             } else {
-                answer++;
+                rt--;
             }
+            answer++;
         }
         return answer;
     }
