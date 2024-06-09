@@ -1,40 +1,29 @@
-import java.util.LinkedList;
+import java.util.*;
 
 class Solution {
     public int solution(int[] priorities, int location) {
-       int answer = 0;
-
-        LinkedList<Integer> processes =  new LinkedList<>();
-        LinkedList<Integer> locations = new LinkedList<>();
-
-        // list에 배열을 담는다.
+        PriorityQueue<Integer> pq = new PriorityQueue<>(
+        (a, b) -> b - a);
+        
+        int answer = 1;
+        
+        
         for (int i = 0; i < priorities.length; i++) {
-            processes.add(priorities[i]);
-            locations.add(i);
+            pq.add(priorities[i]);
         }
-
-        while (!processes.isEmpty()) {
-            boolean isPriority = true;
-            int curPrio = processes.poll();
-            int curIdx  = locations.poll();
-            for (int prio : processes) {
-                if (prio > curPrio) {
-                    isPriority = false;
-                    break;
+        
+        while (!pq.isEmpty()) {
+            for (int i = 0; i < priorities.length; i++) {
+                if (priorities[i] == pq.peek()) {
+                    if (location == i) {
+                        return answer;
+                    }
+                    pq.poll();
+                    answer++;
                 }
-            }
-
-            if (isPriority) {
-                answer++;
-                if (curIdx == location) {
-                    break;
-                }
-            } else {
-                processes.add(curPrio);
-                locations.add(curIdx);
+                
             }
         }
-        System.out.println(answer);
         return answer;
     }
 }
