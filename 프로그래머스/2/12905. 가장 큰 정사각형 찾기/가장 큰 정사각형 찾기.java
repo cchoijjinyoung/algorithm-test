@@ -10,7 +10,7 @@ class Solution {
                 if (board[i][j] != 0) {                    
                     board[i][j] = Math.min(board[i - 1][j - 1], Math.min(board[i][j - 1], board[i - 1][j])) + 1;
                 }
-                if (answer < board[i][j]) answer = board[i][j];
+                answer = Math.max(answer, board[i][j]);
             }
         }
         return answer * answer;
