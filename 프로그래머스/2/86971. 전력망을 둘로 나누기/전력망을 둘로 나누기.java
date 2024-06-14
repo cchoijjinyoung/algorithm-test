@@ -1,62 +1,82 @@
 import java.util.*;
 
 class Solution {
+    int min = Integer.MAX_VALUE;
+    
     public int solution(int n, int[][] wires) {
-        // 인접 리스트 생성
-        List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
-        }
-        for (int[] wire : wires) {
-            int a = wire[0];
-            int b = wire[1];
-            graph.get(a).add(b);
-            graph.get(b).add(a);
-        }
-
-        int minDifference = n;
-        for (int[] wire : wires) {
-            int a = wire[0];
-            int b = wire[1];
-            // 전선 하나를 끊어서 두 부분으로 나눔
-            graph.get(a).remove(Integer.valueOf(b));
-            graph.get(b).remove(Integer.valueOf(a));
-
-            // 각 부분의 송전탑 개수 구함
-            boolean[] visited = new boolean[n + 1];
-            int countA = bfs(a, graph);
-            int countB = n - countA;
-
-            // 최소 차이 갱신
-            minDifference = Math.min(minDifference, Math.abs(countA - countB));
-
-            // 전선 다시 연결
-            graph.get(a).add(b);
-            graph.get(b).add(a);
-        }
-
-        return minDifference;
-    }
-
-    private int bfs(int start, List<List<Integer>> graph) {
-        int result = 0;
-        Queue<Integer> q = new LinkedList<>();
-        boolean[] visited = new boolean[graph.size()];
-        q.offer(start);
-        visited[start] = true;
-        result++;
+        List<List<Integer>> list = new ArrayList<>();
         
-        while (!q.isEmpty()) {
-            int node = q.poll();
+        for (int i = 0; i <= n; i++) {
+            list.add(new ArrayList<>());
+        }
+        
+        for (int i = 0; i < wires.length; i++) {
+            list.get(wires[i][0]).add(wires[i][1]);
+            list.get(wires[i][1]).add(wires[i][0]);
+        }
+        
+        // wires[0] ~ wires[wires.length - 1]까지 한 개씩 끊어봄.
+        for (int i = 0; i < wires.length; i++) {
+            // 끊기
+            list.get(wires[i][0]).remove(Integer.valueOf(wires[i][1]));
+            list.get(wires[i][1]).remove(Integer.valueOf(wires[i][0]));
             
-            for (int neighbor : graph.get(node)) {
-                if (!visited[neighbor]) {
-                    q.offer(neighbor);
-                    visited[neighbor] = true;
-                    result++;
+            // 계산 = 전역 변수 min 업데이트
+            calc(n, list);
+            
+            // 다시 연결
+            list.get(wires[i][0]).add(wires[i][1]);
+            list.get(wires[i][1]).add(wires[i][0]);
+        }
+        return min;
+    }
+    
+    public void calc(int n, List<List<Integer>> list) {
+        boolean[] visited = new boolean[n + 1];
+        Queue<Integer> q1 = new LinkedList<>();
+        q1.offer(1);
+        
+        int part1 = 0;
+        while (!q1.isEmpty()) {
+            int cur = q1.poll();
+            visited[cur] = true;
+            part1 += 1;
+            
+            for (int i = 0; i < list.get(cur).size(); i++) {
+                int next = list.get(cur).get(i);
+                if (visited[next]) {
+                    continue;
                 }
+                
+                q1.offer(next);
             }
         }
-        return result;
+        
+        Queue<Integer> q2 = new LinkedList<>();
+        
+        for (int i = 1; i <= n; i++) {
+            if (visited[i]) {
+                continue;
+            }
+            q2.offer(i);
+            break;
+        }
+        
+        int part2 = 0;
+        while (!q2.isEmpty()) {
+            int cur = q2.poll();
+            visited[cur] = true;
+            part2 += 1;
+            
+            for (int i = 0; i < list.get(cur).size(); i++) {
+                int next = list.get(cur).get(i);
+                if (visited[next]) {
+                    continue;
+                }
+                q2.offer(next);
+            }
+        }
+        int dividen = Math.abs(part1 - part2);
+        min = Math.min(min, dividen);
     }
 }
