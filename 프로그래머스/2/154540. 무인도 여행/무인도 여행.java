@@ -1,32 +1,28 @@
 import java.util.*;
 
 class Solution {
+    List<Integer> list;
+    Queue<int[]> q;
+    boolean[][] visited;
+    int[] dx = {1, 0, -1, 0};
+    int[] dy = {0, 1, 0, -1};
     public int[] solution(String[] maps) {
+        // maps를 순회할건데,
+        // [0][0] 부터 visited가 false면 q에 넣고 시작
+        // q가 빌 때까지 +1 해주고, list.add(넓이);
         
-        List<Integer> list = new ArrayList<>();
-        boolean[][] visited = new boolean[maps.length][maps[0].length()];
-            
-        // maps 순회해서 visited가 false이고, X가 아닌 지점을 찾는다.
+        list = new ArrayList<>();
+        
+        visited = new boolean[maps.length][maps[0].length()];
+        
         for (int i = 0; i < maps.length; i++) {
             for (int j = 0; j < maps[i].length(); j++) {
-                if (visited[i][j]) {
-                    continue;
+                if (maps[i].charAt(j) != 'X' && !visited[i][j]) {
+                    q = new LinkedList<>();
+                    q.offer(new int[]{i, j});
+                    int area = calc(maps);
+                    list.add(area);
                 }
-                
-                if (!valid(i, j, maps)) {
-                    continue;
-                }
-                
-                char cur = maps[i].charAt(j);
-                
-                if (cur == 'X') {
-                    continue;
-                }
-                
-                // 찾으면 List에 담을 자원의 수를 초기화한다.
-                int day = bfs(maps, visited, i, j, cur);
-                // BFS를 돌려서 X가 아닌 땅을 만나면 visited를 true로 만든다.
-                list.add(day);
             }
         }
         
@@ -38,32 +34,24 @@ class Solution {
         for (int i = 0; i < list.size(); i++) {
             answer[i] = list.get(i);
         }
-        
         Arrays.sort(answer);
         
         return answer;
     }
     
-    public int bfs(String[] maps, boolean[][] visited, int x, int y, char c) {
+    public int calc(String[] maps) {
         int result = 0;
-        Queue<Point> q = new LinkedList<>();
-        int[] dx = {1, -1, 0, 0}; // 하, 상, 우, 좌
-        int[] dy = {0, 0, 1, -1};
-        
-        q.add(new Point(x, y, (int)(c - '0')));
         
         while (!q.isEmpty()) {
-            Point cur = q.poll();
-            
-            visited[cur.x][cur.y] = true;
-
-            result += cur.value;
+            int[] cur = q.poll();
+            visited[cur[0]][cur[1]] = true;
+            result += maps[cur[0]].charAt(cur[1]) - '0';
             
             for (int i = 0; i < 4; i++) {
-                int nx = cur.x + dx[i];
-                int ny = cur.y + dy[i];
+                int nx = cur[0] + dx[i];
+                int ny = cur[1] + dy[i];
                 
-                if (!valid(nx, ny, maps)) {
+                if (nx < 0 || ny < 0 || nx > maps.length - 1 || ny > maps[0].length() - 1) {
                     continue;
                 }
                 
@@ -71,34 +59,15 @@ class Solution {
                     continue;
                 }
                 
-                char next = maps[nx].charAt(ny);
-                
-                if (next == 'X') {
+                if (maps[nx].charAt(ny) == 'X') {
                     continue;
                 }
+                
                 visited[nx][ny] = true;
-                q.add(new Point(nx, ny, (int)(next - '0')));
+                
+                q.offer(new int[]{nx, ny});
             }
         }
         return result;
-    }
-    
-    public boolean valid(int x, int y, String[] maps) {
-        if (x < 0 || x > maps.length - 1 || y < 0 || y > maps[0].length() - 1) {
-            return false;
-        }
-        return true;
-    }
-    
-    class Point {
-        int x;
-        int y;
-        int value;
-        
-        public Point(int x, int y, int value) {
-            this.x = x;
-            this.y = y;
-            this.value = value;
-        }
     }
 }
