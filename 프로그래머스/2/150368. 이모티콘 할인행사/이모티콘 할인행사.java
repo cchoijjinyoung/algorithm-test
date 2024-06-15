@@ -1,57 +1,73 @@
 class Solution {
-    int max = 0;
+    int[] rate = new int[]{10, 20, 30, 40};
+    int max = Integer.MIN_VALUE;
     int maxPrice = 0;
     
     public int[] solution(int[][] users, int[] emoticons) {
-        // {10, 20, 30, 40}
-        // dfs => 10 20 30 40에서 인덱스가 증가할 때마다 반복문을 통해 인덱스마다 10 20 30 40
-        int[] percent = new int[]{10, 20, 30, 40};
-        int[] discount = new int[emoticons.length];
+        // 서비스 가입자 늘리는 것이 최우선
+        // 안된다면 판매액을 늘리자
         
-        dfs(users, emoticons, discount, percent, 0);
+        // m개의 이모티콘을 팔건데, 이모티콘마다 할인율이 붙는다.(10, 20, 30, 40)
+        // 자신의 비율 이상 할인하는 이모티콘 모두 구매 시에, 그 비용이 내 기준 가격을 넘어선다면, 가입함.
         
-        int[] answer = new int[]{max, maxPrice};
-        return answer;
+        // 이모티콘마다 할인율 부여.
+        
+        int[] per = new int[emoticons.length];
+        
+        dfs(users, emoticons, per, 0);
+        
+        return new int[]{max, maxPrice};
     }
     
-    public void dfs(int[][] users, int[] emoticons, int[] discount, int[] percent, int depth) {
-        if (depth == emoticons.length) {
-            // 이모티콘별 할인율 모두 적용 완료
-            // 계산
-            calc(users, emoticons, discount, percent);
+    public void dfs(int[][] users, int[] emoticons, int[] per, int depth) {
+        if (depth == per.length) {
+            // 이모티콘마다 할인율을 부여했으면, 유저별로 가입 or 돈 계산
+            calc(users, emoticons, per);
+            
             return;
         }
         
-        // 채워주기
-        for (int i = 0; i < 4; i++) {
-            discount[depth] = percent[i];
-            dfs(users, emoticons, discount, percent, depth + 1);
+        for (int i = 0; i < rate.length; i++) {
+            per[depth] = rate[i];
+            dfs(users, emoticons, per, depth + 1);
         }
     }
     
-    public void calc(int[][] users, int[] emoticons, int[] discount, int[] percent) {
+    public void calc(int[][] users, int[] emoticons, int[] per) {
         int cnt = 0;
-        int totalPrice = 0;
-        for (int i = 0; i < users.length; i++) {
-            int price = 0;
-            // user 별로 계산해서 최대금액이 넘어가는 지 확인해야해.
+        int price = 0;
         
+        for (int i = 0; i < users.length; i++) {
+            int ur = users[i][0]; // 유저의 비율
+            int up = users[i][1]; // 유저의 가격
+            
+            int total = 0;
             for (int j = 0; j < emoticons.length; j++) {
-                if (discount[j] >= users[i][0]) {
-                    price += emoticons[j] / 100 * (100 - discount[j]);
+                int er = per[j]; // 이모티콘 할인율
+                
+                // 만약 유저의 비율보다 할인율이 작다면 continue;
+                if (ur > er) {
+                    continue;
                 }
+                
+                // 할인율이 유저 비율 이상이라면,
+                int ep = emoticons[j] / 100 * (100 - per[j]); // 할인된 이모티콘 가격
+                total += ep;
             }
-            if (price >= users[i][1]) {
+            // 만약 해당 유저의 total이 '유저의 가격'이상이라면, 가입을 한다.
+            if (total >= up) {
                 cnt++;
-            } else {
-                totalPrice += price;
+            } else { // 아니라면 판매액 += 유저 지불 금액
+                price += total;
             }
         }
-        if (cnt > max) {
+        if (max < cnt) {
             max = cnt;
-            maxPrice = totalPrice;
-        } else if (cnt == max && totalPrice > maxPrice) {
-            maxPrice = totalPrice;
+            maxPrice = price;
+        } else if (max == cnt) {
+            if (maxPrice < price) {
+                maxPrice = price;
+            }
         }
     }
 }
