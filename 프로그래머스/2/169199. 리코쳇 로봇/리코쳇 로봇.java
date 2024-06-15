@@ -2,88 +2,60 @@ import java.util.*;
 
 class Solution {
     public int solution(String[] board) {
-        int answer = -1;
-        int[][] visited = new int[board.length][board[1].length()];
-        
-        Queue<Point> q = new LinkedList<>();
-        Point start = null;
-        Point goal = null;
-        
-        // R을 찾는다.
+        int answer = 0;
+        int[] R = new int[2];
+        int[] G = new int[2];
+
         for (int i = 0; i < board.length; i++) {
-            char[] arr = board[i].toCharArray();
-            
-            for (int j = 0; j < arr.length; j++) {
-                if (arr[j] == 'R') {
-                    start = new Point(i, j);
-                } else if (arr[j] == 'G') {
-                    goal = new Point(i, j);
+            for (int j = 0; j < board[i].length(); j++) {
+                if (board[i].charAt(j) == 'R') {
+                    R[0] = i; R[1] = j;
+                } else if (board[i].charAt(j) == 'G') {
+                    G[0] = i; G[1] = j;
                 }
             }
         }
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(R);
         
-        q.offer(start);
-        // R에서부터 상하좌우 움직인다.
-        int[] dx = {0, 0, -1, 1};
-        int[] dy = {1, -1, 0, 0};
+        int[] dx = new int[]{-1, 0, 1, 0};
+        int[] dy = new int[]{0, 1, 0, -1};
+        int[][] visited = new int[board.length][board[0].length()];
         
         while (!q.isEmpty()) {
-            Point cur = q.poll();
+            int[] cur = q.poll();
+            int dist = visited[cur[0]][cur[1]];
             
-            if(board[cur.x].charAt(cur.y) == 'G'){
-                answer = visited[cur.x][cur.y];
-                break;
+            if (cur[0] == G[0] && cur[1] == G[1]) {
+                return dist;
             }
-            int depth = visited[cur.x][cur.y];
             
             for (int i = 0; i < 4; i++) {
-            // 상하좌우 움직일 때는 다음 위치가 돌과 벽일 때까지 이동해야한다.
-                int nx = cur.x + dx[i];
-                int ny = cur.y + dy[i];
+                int nx = cur[0];
+                int ny = cur[1];
+                
                 while (true) {
-                    if (isWall(board, nx, ny)) {
-                        // 벽이나 돌이면, 그 전 위치가 다음 위치
-                        break;
-                    }
                     nx += dx[i];
                     ny += dy[i];
+                    
+                    if (nx < 0 || ny < 0 || 
+                        nx > board.length - 1 || ny > board[0].length() - 1 || 
+                        board[nx].charAt(ny) == 'D') {
+                        break;  
+                    }
                 }
                 
-                nx = nx - dx[i];
-                ny = ny - dy[i];
-                Point next = new Point(nx, ny);
+                nx -= dx[i];
+                ny -= dy[i];
                 
-                if (visited[nx][ny] > 0 && visited[nx][ny] <= depth + 1) {
+                if (visited[nx][ny] > 0) {
                     continue;
-                } else {
-                    visited[nx][ny] = depth + 1;
-                    q.offer(next);
                 }
+                visited[nx][ny] = dist + 1;
+                q.offer(new int[]{nx, ny});
             }
         }
-        answer = visited[goal.x][goal.y] != 0 ? visited[goal.x][goal.y] : -1;
-        return answer;
-    }
-    
-    public boolean isWall(String[] board, int nx, int ny) {
-        if (nx < 0 || nx > board.length - 1 || ny < 0 || ny > board[0].length() - 1) {
-            return true;
-        }
         
-        if (board[nx].charAt(ny) == 'D') {
-            return true;
-        }
-        
-        return false;
-    }
-    
-    class Point {
-        int x;
-        int y;
-        
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
+        return -1;
     }
 }

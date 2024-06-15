@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 74 MB, 시간: 0.86 ms
+메모리: 77.9 MB, 시간: 0.82 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 05월 28일 11:53:56
+2024년 06월 15일 15:38:57
 
 ### 문제 설명
 
@@ -27,7 +27,7 @@
 <p>이 게임에서 말의 움직임은 상, 하, 좌, 우 4방향 중 하나를 선택해서 게임판 위의 장애물이나 맨 끝에 부딪힐 때까지 미끄러져 이동하는 것을 한 번의 이동으로 칩니다. </p>
 
 <p>다음은 보드게임판을 나타낸 예시입니다.</p>
-<div class="highlight"><pre class="codehilite"><code>...D..R
+<div class="highlight"><pre class="codehilite" style="position: relative;"><code>...D..R
 .D.G...
 ....D.D
 D....D.
@@ -83,7 +83,7 @@ D....D.
 </ul>
 
 <p>입출력 예 #2</p>
-<div class="highlight"><pre class="codehilite"><code>.D.R
+<div class="highlight"><pre class="codehilite" style="position: relative;"><code>.D.R
 ....
 .G..
 ...D
