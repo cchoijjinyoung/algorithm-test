@@ -9,6 +9,7 @@ class Solution {
         for (int i = score.length - m; i >= 0; i -= m) {
             answer += score[i] * m;
         }
+        
         return answer;
     }
 }
