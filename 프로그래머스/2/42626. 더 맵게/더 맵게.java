@@ -6,24 +6,26 @@ class Solution {
         
         PriorityQueue<Integer> pq = new PriorityQueue<>();
         
-        for (int s : scoville) {
-            pq.offer(s);
+        for (int i : scoville) {
+            pq.offer(i);
         }
         
-        while (pq.size() >= 2) {
-            if (pq.peek() >= K) {
+        while (pq.peek() < K) {
+            
+            if (pq.size() >= 2) {
+                int x = pq.poll();
+                int y = pq.poll();
+
+                int sum = x + y * 2;
+                pq.offer(sum);
+
+                answer++;
+            } else {
+                answer = -1;
                 break;
             }
-            
-            int a = pq.poll();
-            int b = pq.poll();
-            
-            pq.offer(a + b * 2);
-            
-            answer++;
         }
         
-        if (pq.peek() < K) answer = -1;
         return answer;
     }
 }
