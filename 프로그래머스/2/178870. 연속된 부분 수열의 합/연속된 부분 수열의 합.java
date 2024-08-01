@@ -1,34 +1,31 @@
 class Solution {
     public int[] solution(int[] sequence, int k) {
-        int[] answer = new int[]{0, sequence.length - 1};
+        int[] answer = new int[2];
+
+        int distance = Integer.MAX_VALUE;
         
-        int lt = 0;
-        int rt = 0;
-        int sum = sequence[0];
-        while (lt < sequence.length && rt < sequence.length) {
+        int lt = 0, rt = 0;
+        int sum = sequence[lt];
+        
+        while (rt < sequence.length) {
             if (sum == k) {
-                compare(lt, rt, answer);
-                if (rt == sequence.length - 1) {
-                    break;
+                if (distance > rt - lt) {
+                    distance = rt - lt;
+                    answer[0] = lt;
+                    answer[1] = rt;
                 }
-                sum -= sequence[lt++];
-                sum += sequence[++rt];
-            } else if (sum > k) {
-                sum -= sequence[lt++];
+                sum -= sequence[lt];
+                lt++;
             } else if (sum < k) {
-                if (rt == sequence.length - 1) {
-                    break;
+                rt++;
+                if (rt < sequence.length) {
+                    sum += sequence[rt];
                 }
-                sum += sequence[++rt];
+            } else if (sum > k) {
+                sum -= sequence[lt];
+                lt++;
             }
         }
         return answer;
-    }
-        
-    public void compare(int lt, int rt, int[] answer) {
-        if (answer[1] - answer[0] > rt - lt) {
-            answer[0] = lt;
-            answer[1] = rt;
-        }
     }
 }
