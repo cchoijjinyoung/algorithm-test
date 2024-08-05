@@ -95,4 +95,5 @@ class Solution {
             this.y = y;
         }
     }
+    // j를 i라 적고, cnt + 1을 cnt++로 하였따..
 }
