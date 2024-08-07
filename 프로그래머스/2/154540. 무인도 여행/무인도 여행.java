@@ -1,51 +1,55 @@
 import java.util.*;
 
 class Solution {
-    List<Integer> list;
-    Queue<int[]> q;
+    int[] dx = new int[]{1, 0, -1, 0};
+    int[] dy = new int[]{0, 1, 0, -1};
     boolean[][] visited;
-    int[] dx = {1, 0, -1, 0};
-    int[] dy = {0, 1, 0, -1};
+    List<Integer> temp;
+    
     public int[] solution(String[] maps) {
-        // maps를 순회할건데,
-        // [0][0] 부터 visited가 false면 q에 넣고 시작
-        // q가 빌 때까지 +1 해주고, list.add(넓이);
-        
-        list = new ArrayList<>();
+        temp = new ArrayList<>();
         
         visited = new boolean[maps.length][maps[0].length()];
         
         for (int i = 0; i < maps.length; i++) {
-            for (int j = 0; j < maps[i].length(); j++) {
-                if (maps[i].charAt(j) != 'X' && !visited[i][j]) {
-                    q = new LinkedList<>();
-                    q.offer(new int[]{i, j});
-                    int area = calc(maps);
-                    list.add(area);
+            for (int j = 0; j < maps[0].length(); j++) {
+                if (visited[i][j]) {
+                    continue;
                 }
+                
+                if (maps[i].charAt(j) == 'X') {
+                    continue;
+                }
+                
+                BFS(maps, i, j);
             }
         }
+        Collections.sort(temp);
         
-        if (list.isEmpty()) {
-            return new int[]{-1};
-        }
+        int[] answer;
         
-        int[] answer = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            answer[i] = list.get(i);
+        if (temp.isEmpty()) {
+            answer = new int[]{-1};
+        } else {
+            answer = new int[temp.size()];
+        
+            for (int i = 0; i < temp.size(); i++) {
+                answer[i] = temp.get(i);
+            }
         }
-        Arrays.sort(answer);
         
         return answer;
     }
     
-    public int calc(String[] maps) {
+    public void BFS(String[] maps, int x, int y) {
         int result = 0;
+        Queue<int[]> q = new LinkedList<>();
+        q.offer(new int[]{x, y});
         
         while (!q.isEmpty()) {
             int[] cur = q.poll();
             visited[cur[0]][cur[1]] = true;
-            result += maps[cur[0]].charAt(cur[1]) - '0';
+            result += (int)(maps[cur[0]].charAt(cur[1]) - '0');
             
             for (int i = 0; i < 4; i++) {
                 int nx = cur[0] + dx[i];
@@ -55,19 +59,18 @@ class Solution {
                     continue;
                 }
                 
-                if (visited[nx][ny]) {
-                    continue;
-                }
-                
                 if (maps[nx].charAt(ny) == 'X') {
                     continue;
                 }
                 
-                visited[nx][ny] = true;
+                if (visited[nx][ny]) {
+                    continue;
+                }
                 
                 q.offer(new int[]{nx, ny});
+                visited[nx][ny] = true;
             }
         }
-        return result;
+        temp.add(result);
     }
 }
