@@ -1,23 +1,20 @@
 class Solution {
     public int solution(int storey) {
-        return DFS(storey);
-    }
+        int answer = 0;
         
-    // 16 -> 20 -> 0
-    public int DFS(int storey) {
-        if(storey == 0) {
-            return 0;
+        while (storey != 0) {
+            int value = storey % 10;
+            int next = storey / 10;
+            int check = next % 10;
+            
+            if (value <= 4 || (value == 5 && check <= 4)) {
+                storey = next;
+                answer += value;
+            } else {
+                storey = next + 1;
+                answer += 10 - value;
+            }
         }
-                        
-        int value = storey%10;
-        int check = (storey%100)/10;
-              
-        // 0~4 일 때 n만큼 감소, 6~9일 때 10 - n 만큼 감소 
-        // 5일 땐 다음 값이 0~4면 +5, 5~9면 10 - n만큼 감소 
-        if(value <= 4 || (value == 5 && check <= 4)) {
-            return value + DFS(storey/10);
-        }else {
-            return 10 - value + DFS(storey/10 + 1);
-        }      
-    } 
+        return answer;
+    }
 }
