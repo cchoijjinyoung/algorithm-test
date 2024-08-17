@@ -1,52 +1,67 @@
 import java.util.*;
+
 class Solution {
+    int answer = 0;
     public int solution(String[] want, int[] number, String[] discount) {
-        int answer = 0;
+        Map<String, Integer> hm = new HashMap<>();
+        
+        for (int i = 0; i < want.length; i++) {
+            hm.put(want[i], i);
+        }
+        
+        int[] counts = Arrays.copyOf(number, number.length);
+        for (int i = 0; i < 10; i++) {
+            String s = discount[i];
+            
+            if (hm.containsKey(s)) {
+                int idx = hm.get(s);
+                counts[idx]--;
+            }
+        }
+        
+        calc(counts);
+        
+        int lt = 0;
+        int rt = 10;
+        while (rt < discount.length) {
+            String pre = discount[lt];
+            String next = discount[rt];
+            
+            if (hm.containsKey(pre)) {
+                int preIdx = hm.get(pre);    
+                counts[preIdx]++;
+            }
+            
+            boolean flag = false;
+            if (hm.containsKey(next)) {
+                int nextIdx = hm.get(next);    
+                counts[nextIdx]--;
                 
-        // 초기화 
-        Map<String, Integer> map = new HashMap<>();
-        for(int i=0; i<want.length; i++) {
-                        map.put(want[i], number[i]);
-        }
-                
-        // 10번 계산
-        for(int i=0; i<10; i++) {
-            if(map.containsKey(discount[i])) {  
-                                map.put(discount[i], map.get(discount[i]) -1);              
+                if (counts[nextIdx] == 0) {
+                    flag = true;
+                }
             }
-        }
-                
-        if(check(map)) {
-            answer++;
-        }
-              
-        int p1 = 0;
-        int p2 = 10; 
-        while(p2 <= discount.length-1) {
-                        
-            if(map.containsKey(discount[p1])) {
-                                map.put(discount[p1], map.get(discount[p1]) + 1);
+            
+            if (flag) {
+                calc(counts);
             }
-                        
-            if(map.containsKey(discount[p2])) {
-                                map.put(discount[p2], map.get(discount[p2]) - 1);
-            }
-                        
-            if(check(map)) {
-                answer++;
-            }
-            p1++;
-            p2++;
+            lt++;
+            rt++;
         }
+        
         return answer;
     }
-        
-    public boolean check(Map<String, Integer> map) {
-        for(Map.Entry<String, Integer> entry : map.entrySet()) {
-            if(entry.getValue() !=0) {
-                return false;
+    
+    public void calc(int[] counts) {
+        boolean flag = true;
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] != 0) {
+                flag = false;
+                break;
             }
         }
-        return true;
-    }        
+        if (flag) {
+            answer++;
+        }
+    }
 }
