@@ -4,50 +4,63 @@ class Solution {
     public int solution(int N, int[][] road, int K) {
         int answer = 0;
         
-        boolean[] visited = new boolean[N + 1];
-        
-        // 출발노드 - {도착지 가중치}.., .., ..
+        // 큐에 넣는다?
+        // 일단 양방향 연결을 해야함.
+        // 각 나라가 어디로 갈 수 있는지 리스트로 저장.
+        // 이중리스트 필요
         List<List<int[]>> list = new ArrayList<>();
         
-        // 초기화
+        // 각 나라별 리스트 초기화
         for (int i = 0; i <= N; i++) {
             list.add(new ArrayList<>());
         }
         
+        // road를 순회하면서 양방향 연결
         for (int i = 0; i < road.length; i++) {
-            list.get(road[i][0]).add(new int[]{road[i][1], road[i][2]});
-            list.get(road[i][1]).add(new int[]{road[i][0], road[i][2]});
+            int from = road[i][0];
+            int to = road[i][1];
+            int dist = road[i][2];
+            
+            list.get(from).add(new int[]{to, dist});
+            list.get(to).add(new int[]{from, dist});
         }
         
-        int[] dist = new int[N + 1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
+        boolean[] visited = new boolean[N + 1];
+        int[] dists = new int[N + 1];
+        Arrays.fill(dists, Integer.MAX_VALUE);
         
-        PriorityQueue<int[]> pq = new PriorityQueue<>((n1, n2) -> n1[1] - n2[1]);
-        pq.offer(new int[]{1, 0});
-        dist[1] = 0;
+        PriorityQueue<int[]> q = new PriorityQueue<>((n1, n2) -> n1[1] - n2[1]);
+        q.offer(new int[]{1, 0});
+        dists[1] = 0;
         
-        while (!pq.isEmpty()) {
-            int[] cur = pq.poll();
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
             
-            if (visited[cur[0]]) {
+            int from = cur[0];
+            int dist = cur[1];
+            
+            if (visited[from]) {
                 continue;
             }
             
-            visited[cur[0]] = true;
+            visited[from] = true;
             
-            for (int i = 0; i < list.get(cur[0]).size(); i++) {
-                int[] next = list.get(cur[0]).get(i);
+            for (int i = 0; i < list.get(from).size(); i++) {
+                int[] next = list.get(from).get(i);
+                int to = next[0];
+                int nextDist = next[1];
                 
-                dist[next[0]] = Math.min(dist[next[0]], cur[1] + next[1]);
-                pq.offer(new int[]{next[0], dist[next[0]]});
+                dists[to] = Math.min(dists[to], dist + nextDist);
+                q.offer(new int[]{to ,dists[to]});
             }
         }
         
-        for (int i = 1; i < dist.length; i++) {
-            if (dist[i] <= K) {
+        for (int i = 1; i < dists.length; i++) {
+            if (dists[i] <= K) {
                 answer++;
             }
         }
+
         return answer;
     }
 }
