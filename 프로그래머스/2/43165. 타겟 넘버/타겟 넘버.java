@@ -1,32 +1,35 @@
 class Solution {
+    int[] ops = {1, -1};
     int answer = 0;
-    int[] signNum = new int[]{1, -1};
     public int solution(int[] numbers, int target) {
-        int[] sign = new int[numbers.length];
         
-        dfs(numbers, target, sign, 0);
+        int[] arr = new int[numbers.length];
+        
+        dfs(numbers, target, arr, 0);
+        
         return answer;
     }
     
-    public void dfs(int[] numbers, int target, int[] sign, int depth) {
-        if (depth == sign.length) {
-            int sum = calc(numbers, sign);
-            if (sum == target) {
-                answer++;
-            }
+    public void dfs(int[] numbers, int target, int[] arr, int depth) {
+        if (depth == arr.length) {
+            calc(numbers, target, arr);
             return;
         }
-        for (int i = 0; i < signNum.length; i++) {
-            sign[depth] = signNum[i];
-            dfs(numbers, target, sign, depth + 1);
+        
+        for (int i = 0; i < 2; i++) {
+            arr[depth] = ops[i];
+            dfs(numbers, target, arr, depth + 1);
         }
     }
     
-    public int calc(int[] numbers, int[] sign) {
-        int result = 0;
+    public void calc(int[] numbers, int target, int[] arr) {
+        int sum = 0;
         for (int i = 0; i < numbers.length; i++) {
-            result += numbers[i] * sign[i];
+            int cur = numbers[i] * arr[i];
+            sum += cur;
         }
-        return result;
+        if (sum == target) {
+            answer++;
+        }
     }
 }
