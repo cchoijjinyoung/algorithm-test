@@ -4,16 +4,19 @@ import java.io.*;
 class Main {
     public static void main(String[] args) throws Exception {
         long result = 0;
-        int[] answer = new int[1_000_001];
         
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         
+        int max = Integer.MIN_VALUE;
         int[] students = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) {
             students[i] = Integer.parseInt(st.nextToken());
+            max = Math.max(max, students[i]);
         }
+        
+        int[] answer = new int[max + 1];
         
         st = new StringTokenizer(br.readLine());
         int B = Integer.parseInt(st.nextToken());
@@ -25,11 +28,10 @@ class Main {
         }
         
         // 부가 1명씩 추가될 때마다 배열에 업데이트
-        int start = B + 1;
         int end = B + C;
         int count = 1;
-        for (int i = start; i <= end; i++) {
-            if (i == 1_000_001) {
+        for (int i = B + 1; i <= end; i++) {
+            if (i == max + 1) {
                 break;
             }
             answer[i] = 1 + count;
