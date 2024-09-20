@@ -95,11 +95,7 @@ class Main {
         }
         // 큐 다 돌면, 각나라 인구 수를 total/나라 수로 바꿔줘야함.
         if (countrys.size() > 1) {
-            int value = total / countrys.size();
-            while (!countrys.isEmpty()) {
-                int[] country = countrys.poll();
-                copyMap[country[0]][country[1]] = value;
-            }
+            update(total, countrys);
         }
         return openCnt;
     }
@@ -110,5 +106,13 @@ class Main {
             return true;
         }
         return false;
+    }
+    
+    public static void update(int total, Queue<int[]> countrys) {
+        int value = total / countrys.size();
+        while (!countrys.isEmpty()) {
+            int[] country = countrys.poll();
+            copyMap[country[0]][country[1]] = value;
+        }
     }
 }
