@@ -36,7 +36,7 @@ class Solution {
         int[] expect = new int[len];
         
         for (int i = 0; i < len; i++) { // i 친구가
-            for (int j = i; j < len; j++) { // j 친구에게
+            for (int j = i + 1; j < len; j++) { // j 친구에게
                 int f1 = map[i][j];
                 int f2 = map[j][i];
                 
