@@ -2,22 +2,20 @@ import java.util.*;
 
 class Solution {
     public String solution(int n, int t, int m, String[] timetable) {
-        PriorityQueue<String> pq = new PriorityQueue<>();
-        for (int i = 0; i < timetable.length; i++) {
-            pq.offer(timetable[i]);
-        }
+        Arrays.sort(timetable);
         
-        int bus = 540;
-        int max = bus + t * (n - 1);
-        int cnt = 0;
-        int before = 0;
+        int bus = 540; // 첫차 09:00
+        int max = bus + t * (n - 1); // 막차
+        int cnt = 0; // 지금 버스에 몇명탔는지
+        int before = 0; // 마지막에 탄 녀석의 time
+        int idx = 0;
         
-        while (n-- > 0) {
+        while (n-- > 0) { // 버스 한대씩 보냄
             cnt = 0;
-            while (!pq.isEmpty()) {
-                String nextCrew = pq.peek();
+            while (idx < timetable.length) {
+                String nextCrew = timetable[idx];
                 if (convert(nextCrew) <= bus) {
-                    pq.poll();
+                    idx++;
                     cnt++;
                     before = convert(nextCrew);
                 } else {
