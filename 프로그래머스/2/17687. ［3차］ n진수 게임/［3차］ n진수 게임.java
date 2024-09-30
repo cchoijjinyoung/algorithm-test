@@ -12,8 +12,8 @@ class Solution {
         }
         
         // 튜브가 외칠 문자만 골라내기
-        for(int i = p - 1;  answer.length() < t; i += m){
-            answer.append(total.charAt(i));
+        for(int i = 0; i < t; i++){
+            answer.append(total.charAt(p - 1 + i * m));
         }
         
         // 10 -> a와 같이 변환되므로, 대문자로 변경
