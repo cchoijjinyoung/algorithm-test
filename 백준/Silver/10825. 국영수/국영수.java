@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * 국영수 실버4
@@ -10,7 +9,8 @@ import java.util.StringTokenizer;
 class Main {
   static int N;
   static Student[] S;
-
+  static StringBuilder sb = new StringBuilder();
+    
   static class Student implements Comparable<Student> {
     String name;
     int k;
@@ -31,16 +31,10 @@ class Main {
       // 2. 국어 점수가 같으면 영어 점수가 증가하는 순 - 영어 점수 오름차순
       // 3. 수학 점수 감소하는 순 - 수학 내림차순
       // 4. 사전 순 증가 - 사전 오름차순(대문자가 소문자보다 앞)
-      if (this.k == o.k) {
-        if (this.e == o.e) {
-          if (this.m == o.m) {
-            return this.name.compareTo(o.name);
-          }
-          return o.m - this.m;
-        }
-        return this.e - o.e;
-      }
-      return o.k - this.k;
+      if (this.k != o.k) return o.k - this.k;
+      if (this.e != o.e) return this.e - o.e;
+      if (this.m != o.m) return o.m - this.m;
+      return this.name.compareTo(o.name);
     }
   }
 
@@ -67,7 +61,8 @@ class Main {
     Arrays.sort(S);
 
     for (Student s : S) {
-      System.out.println(s.name);
+      sb.append(s.name).append('\n');
     }
+    System.out.println(sb.toString());
   }
 }
