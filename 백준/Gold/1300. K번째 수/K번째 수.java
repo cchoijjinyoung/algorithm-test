@@ -20,7 +20,7 @@ class Main {
     for (int i = 1; i <= N; i++) {
       cnt += (int) Math.min(mid / i, N);
     }
-    return cnt < K;
+    return cnt >= K;
   }
 
   public static void main(String[] args) throws Exception {
@@ -30,9 +30,9 @@ class Main {
     while (L <= R) {
       long mid = (L + R) / 2; // i * j
       if (check(mid)) {
-        L = mid + 1;
-      } else {
         R = mid - 1;
+      } else {
+        L = mid + 1;
       }
     }
     System.out.println(L);
