@@ -46,11 +46,6 @@ class Main {
       int y = q.poll();
       int d = q.poll();
 
-      if (x == N - 1 && y == M - 1) {
-        System.out.println(d);
-        return;
-      }
-
       for (int i = 0; i < 4; i++) {
         int nx = x + dx[i];
         int ny = y + dy[i];
@@ -65,6 +60,11 @@ class Main {
 
         if (visited[nx][ny]) {
           continue;
+        }
+
+        if (nx == N - 1 && ny == M - 1) {
+          System.out.println(d + 1);
+          return;
         }
 
         q.add(nx);
