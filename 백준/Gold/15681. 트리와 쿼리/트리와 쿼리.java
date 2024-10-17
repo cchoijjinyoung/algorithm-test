@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -42,34 +43,31 @@ class Main {
   }
 
   static int dfs(int node) {
-    subTreeCounts[node] = 1;
-
     for (int child : tree.get(node)) {
       if (visited[child]) {
         continue;
       }
       visited[child] = true;
-      subTreeCounts[node] += dfs(child);
+      subTreeCounts[node] += dfs(child); // 자식 노드의 서브트리를 더해간다.
     }
-    return subTreeCounts[node];
+    return subTreeCounts[node]; // 내 서브트리 수를 부모노드에게 리턴한다.
   }
 
   static void bfs() {
     visited[R] = true;
 
-    int subTreeCount = 1;
     for (int child : tree.get(R)) {
       visited[child] = true;
-      subTreeCount += dfs(child);
-      subTreeCounts[R] = subTreeCount;
+      subTreeCounts[R] += dfs(child);
     }
   }
 
   static void pro() {
+    Arrays.fill(subTreeCounts, 1);
     bfs();
 
-    for (int i = 0; i < A.length; i++) {
-      System.out.println(subTreeCounts[A[i]]);
+    for (int node : A) {
+      System.out.println(subTreeCounts[node]);
     }
   }
 
