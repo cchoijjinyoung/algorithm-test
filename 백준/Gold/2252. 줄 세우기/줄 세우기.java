@@ -1,55 +1,64 @@
-import java.util.*;
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 class Main {
-    static int N;
-    static int M;
-    static int[] indeg;
-    static List<List<Integer>> list;
-    static StringBuilder sb;
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        indeg = new int[N + 1];
-        list = new ArrayList<>();
-        sb = new StringBuilder();
-        
-        indeg[0] = -1;
-        
-        for (int i = 0; i <= N; i++) {
-            list.add(new ArrayList<>());
-        }
-        
-        for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
-            int from = Integer.parseInt(st.nextToken());
-            int to = Integer.parseInt(st.nextToken());
-            list.get(from).add(to);
-            indeg[to]++;
-        }
-        
-        // 본인보다 앞에 서야할 사람이 없으면 큐에 담는다.
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 1; i <= N; i++) {
-            if (indeg[i] == 0) {
-                q.offer(i);
-            }
-        }
-        
-        while (!q.isEmpty()) {
-            int cur = q.poll();
-            sb.append(cur).append(' ');
-            
-            for (int to : list.get(cur)) {
-                indeg[to]--;
-                if (indeg[to] == 0) {
-                    q.offer(to);
-                }
-            }
-        }
-        System.out.println(sb.toString());
+  static int N, M;
+  static int[] indeg;
+  static List<List<Integer>> graph = new ArrayList<>();
+  static Queue<Integer> D = new LinkedList<>();
+  static StringBuilder sb = new StringBuilder();
+  static void input() throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = new StringTokenizer(br.readLine());
+
+    N = Integer.parseInt(st.nextToken());
+    M = Integer.parseInt(st.nextToken());
+    indeg = new int[N + 1];
+
+    for (int i = 0; i <= N; i++) {
+      graph.add(new ArrayList<>());
     }
+
+    for (int i = 1; i <= M; i++) {
+      st = new StringTokenizer(br.readLine());
+      int from = Integer.parseInt(st.nextToken());
+      int to = Integer.parseInt(st.nextToken());
+      graph.get(from).add(to);
+      indeg[to]++;
+    }
+  }
+
+  static void pro() {
+    // 가장 앞에 올 수 있는 학생을 큐에 넣어준다.
+    for (int student = 1; student <= N; student++) {
+      if (indeg[student] == 0) {
+        D.add(student);
+      }
+    }
+
+    while (!D.isEmpty()) {
+      int cur = D.poll();
+      sb.append(cur).append(" ");
+      for (int to : graph.get(cur)) {
+        indeg[to]--;
+        if (indeg[to] == 0) {
+          D.add(to);
+        }
+      }
+    }
+    System.out.println(sb.toString());
+  }
+
+  public static void main(String[] args) throws Exception {
+    input();
+    pro();
+
+  }
 }
