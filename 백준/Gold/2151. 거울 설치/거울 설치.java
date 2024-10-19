@@ -49,6 +49,7 @@ public class Main {
 
     for (int i = 0; i < 4; i++) {
       q.add(new int[]{start[0], start[1], 0, i});
+      visited[start[0]][start[1]][i] = true;
     }
 
     while (!q.isEmpty()) {
@@ -63,8 +64,6 @@ public class Main {
         return;
       }
 
-      visited[x][y][dir] = true;
-
       int nx = x + dx[dir];
       int ny = y + dy[dir];
 
@@ -77,10 +76,16 @@ public class Main {
       }
         
       if (visited[nx][ny][dir]) continue;
+      visited[nx][ny][dir] = true;
 
       if (map[nx][ny] == '!') {
         // '/' , '\' 으로 거울을 설치해줄수 있다.
+        // if (visited[nx][ny][(dir + 1) % 4]) continue;
+        // visited[nx][ny][(dir + 1) % 4] = true;
         q.add(new int[]{nx, ny, count + 1, (dir + 1) % 4});
+          
+        // if (visited[nx][ny][(dir + 3) % 4]) continue;
+        // visited[nx][ny][(dir + 3) % 4] = true;
         q.add(new int[]{nx, ny, count + 1, (dir + 3) % 4});
       }
       q.add(new int[]{nx, ny, count, dir});
