@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -63,7 +62,7 @@ public class Main {
         System.out.println(count);
         return;
       }
-      if (visited[x][y][dir]) continue;
+
       visited[x][y][dir] = true;
 
       int nx = x + dx[dir];
@@ -76,6 +75,8 @@ public class Main {
       if (map[nx][ny] == '*') {
         continue;
       }
+        
+      if (visited[nx][ny][dir]) continue;
 
       if (map[nx][ny] == '!') {
         // '/' , '\' 으로 거울을 설치해줄수 있다.
