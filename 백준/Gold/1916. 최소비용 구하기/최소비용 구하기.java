@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 public class Main {
   static int N, M, S, E, answer;
   static int[] dist;
-  static boolean[] visited;
+  // static boolean[] visited;
   static ArrayList<Edge>[] graph;
   static PriorityQueue<int[]> pq;
   static void input() throws IOException {
@@ -26,7 +26,7 @@ public class Main {
     M = Integer.parseInt(br.readLine());
 
     dist = new int[N + 1];
-    visited = new boolean[N + 1];
+    // visited = new boolean[N + 1];
 
     graph = new ArrayList[N + 1];
     for (int i = 0; i <= N; i++) {
@@ -68,19 +68,18 @@ public class Main {
       int v = cur[0];
       int d = cur[1];
 
-      if (visited[v]) {
-        continue;
-      }
-      visited[v] = true;
+//      if (visited[v]) continue;
+//      visited[v] = true;
+      if (dist[v] < d) continue;
 
       for (Edge edge : graph[v]) {
         // 이미 더 작은 가중치로 가고 있으면, continue;
         if (dist[edge.idx] <= d + edge.weight) {
           continue;
         }
-        
+
         dist[edge.idx] = d + edge.weight;
-        
+
         pq.add(new int[]{edge.idx, dist[edge.idx]});
       }
     }
