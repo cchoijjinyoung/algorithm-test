@@ -1,31 +1,44 @@
-import java.util.Scanner;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+/**
+ * 1, 2, 3 더하기, 실버3
+ * 알고리즘: DP
+ */
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        for (int i = 0; i < n; i++) {
-            int x = sc.nextInt();
-            if (x < 3) {
-                System.out.println(x);
-                continue;
-            } else if (x == 3) {
-                System.out.println(4);
-                continue;
-            }
-            int[] A = new int[x  + 1];
-            A[0] = 0;
-            A[1] = 1;
-            A[2] = 2;
-            A[3] = 4;
+  static int T;
+  static int[] N, dp;
 
-            for (int j = 4; j < A.length; j++) {
-                // ex) 5
-                // 5를 만드는 법은
-                // 4만드는법에 1더하기 + 3만드는법에 2더하기 + 2만드는법에 3더하기로 표현가능
-                A[j] = A[j - 1] + A[j - 2] + A[j - 3];
-            }
-            System.out.println(A[x]);
-        }
+  static void input() throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    T = Integer.parseInt(br.readLine());
+
+    N = new int[T];
+    for (int i = 0; i < T; i++) {
+      N[i] = Integer.parseInt(br.readLine());
     }
+  }
+
+  static void pro() {
+    dp = new int[12];
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 4;
+
+    for (int i = 4; i <= 11; i++) {
+      dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
+    }
+
+    for (int i = 0; i < T; i++) {
+      System.out.println(dp[N[i]]);
+    }
+  }
+
+  public static void main(String[] args) throws Exception {
+    input();
+    pro();
+  }
 }
