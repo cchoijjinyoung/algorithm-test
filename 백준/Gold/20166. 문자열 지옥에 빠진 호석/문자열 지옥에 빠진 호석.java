@@ -50,21 +50,19 @@ public class Main {
     }
   }
 
-  static int bfs(String s, int len, int x, int y) {
-    int result = 0;
-
-    Queue<int[]> q = new LinkedList<>();
-    q.add(new int[]{x, y, 1}); // 1은 현재까지 채운 알파벳
+  static void bfs(int x, int y) {
+    Queue<Word> q = new LinkedList<>();
+    q.add(new Word(x, y, String.valueOf(board[x][y])));
 
     while (!q.isEmpty()) {
-      int[] cur = q.poll();
-      int cx = cur[0];
-      int cy = cur[1];
-      int depth = cur[2]; // 현재 몇글자까지 채웠는가
+      Word word = q.poll();
+      int cx = word.x;
+      int cy = word.y;
+      String cs = word.s;
 
-      if (depth == len) {
-        result++;
-        countMap.put(s, result);
+      countMap.put(cs, countMap.getOrDefault(cs, 0) + 1);
+
+      if (cs.length() == 5) {
         continue;
       }
 
@@ -72,39 +70,41 @@ public class Main {
         int nx = (cx + dx[i] + N) % N;
         int ny = (cy + dy[i] + M) % M;
 
-        if (board[nx][ny] != s.charAt(depth)) {
-          continue;
-        }
-
-        q.add(new int[]{nx, ny, depth + 1});
+        q.add(new Word(nx, ny, cs + board[nx][ny]));
       }
     }
-    return result;
   }
 
-  static void pro(String s) {
-    if (countMap.containsKey(s)) {
-      System.out.println(countMap.get(s));
-      return;
+  static void pro() {
+    for (int i = 0; i < N; i++) {
+      for (int j = 0; j < M; j++) {
+        bfs(i, j);
+      }
     }
-    
-    int answer = 0;
-    // len 만큼만 이동할 수 있음(탈출 조건)
-    int len = s.length();
 
-    char first = s.charAt(0);
-
-    for (int[] point : map.get(first)) {
-      answer += bfs(s, len, point[0], point[1]);
+    for (int i = 0; i < A.length; i++) {
+      if (countMap.containsKey(A[i])) {
+        System.out.println(countMap.get(A[i]));
+      } else {
+        System.out.println(0);
+      }
     }
-    System.out.println(answer);
   }
 
   public static void main(String[] args) throws Exception {
     input();
+    pro();
+  }
+}
 
-    for (int i = 0; i < A.length; i++) {
-      pro(A[i]);
-    }
+class Word {
+  int x;
+  int y;
+  String s;
+
+  Word(int x, int y, String s) {
+    this.x = x;
+    this.y = y;
+    this.s = s;
   }
 }
