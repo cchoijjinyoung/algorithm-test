@@ -37,7 +37,6 @@ public class Main {
 
   static void search(int start) {
     boolean[] visited = new boolean[N];
-    boolean[] possible = new boolean[N];
     Queue<Integer> q = new LinkedList<>();
     q.add(start);
 
@@ -48,12 +47,11 @@ public class Main {
         if (visited[next]) continue;
         q.add(next);
         visited[next] = true;
-        possible[next] = true;
       }
     }
 
     for (int i = 0; i < N; i++) {
-      if (!possible[i]) continue;
+      if (!visited[i]) continue;
       result[start][i] = 1;
     }
   }
