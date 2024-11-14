@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,7 +23,6 @@ public class Main {
   }
 
   static boolean check(int count) {
-    int max = 0;
     PriorityQueue<Integer> pq = new PriorityQueue<>();
     for (int i = 0; i < count; i++) {
       pq.add(0);
@@ -33,14 +31,11 @@ public class Main {
     int idx = 0;
     while (idx < N) {
       int cur = pq.poll();
+      if (cur + A[idx] > X) return false;
       pq.add(cur + A[idx++]);
     }
 
-    while (!pq.isEmpty()) {
-      max = Math.max(max, pq.poll());
-    }
-
-    return max <= X;
+    return true;
   }
 
   static void pro() {
