@@ -8,7 +8,7 @@ public class Main {
   static int N;
   static int[][] board;
   static int min, max;
-  static int[][][] dp;
+  static int[][] dp;
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st = new StringTokenizer(br.readLine());
@@ -28,34 +28,35 @@ public class Main {
 
   static int max() {
     for (int i = 1; i < N; i++) {
-      dp[i][0][0] = Math.max(dp[i - 1][0][0], dp[i - 1][1][0]) + board[i][0];
-      dp[i][1][0] = Math.max(dp[i - 1][0][0], Math.max(dp[i - 1][1][0], dp[i - 1][2][0])) + board[i][1];
-      dp[i][2][0] = Math.max(dp[i - 1][1][0], dp[i - 1][2][0]) + board[i][2];
+      dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]) + board[i][0];
+      dp[i][1] = Math.max(dp[i - 1][0], Math.max(dp[i - 1][1], dp[i - 1][2])) + board[i][1];
+      dp[i][2] = Math.max(dp[i - 1][1], dp[i - 1][2]) + board[i][2];
     }
-    return Math.max(dp[N - 1][0][0], Math.max(dp[N - 1][1][0], dp[N - 1][2][0]));
+    return Math.max(dp[N - 1][0], Math.max(dp[N - 1][1], dp[N - 1][2]));
   }
 
   static int min() {
     for (int i = 1; i < N; i++) {
-      dp[i][0][1] = Math.min(dp[i - 1][0][1], dp[i - 1][1][1]) + board[i][0];
-      dp[i][1][1] = Math.min(dp[i - 1][0][1], Math.min(dp[i - 1][1][1], dp[i - 1][2][1])) + board[i][1];
-      dp[i][2][1] = Math.min(dp[i - 1][1][1], dp[i - 1][2][1]) + board[i][2];
+      dp[i][0] = Math.min(dp[i - 1][0], dp[i - 1][1]) + board[i][0];
+      dp[i][1] = Math.min(dp[i - 1][0], Math.min(dp[i - 1][1], dp[i - 1][2])) + board[i][1];
+      dp[i][2] = Math.min(dp[i - 1][1], dp[i - 1][2]) + board[i][2];
     }
-    return Math.min(dp[N - 1][0][1], Math.min(dp[N - 1][1][1], dp[N - 1][2][1]));
+    return Math.min(dp[N - 1][0], Math.min(dp[N - 1][1], dp[N - 1][2]));
   }
 
   static void pro() {
-    dp = new int[N][3][2];
-    dp[0][0][0] = board[0][0];
-    dp[0][1][0] = board[0][1];
-    dp[0][2][0] = board[0][2];
+    dp = new int[N][3];
+    dp[0][0] = board[0][0];
+    dp[0][1] = board[0][1];
+    dp[0][2] = board[0][2];
 
     StringBuilder sb = new StringBuilder();
     sb.append(max()).append(' ');
 
-    dp[0][0][1] = board[0][0];
-    dp[0][1][1] = board[0][1];
-    dp[0][2][1] = board[0][2];
+    dp = new int[N][3];
+    dp[0][0] = board[0][0];
+    dp[0][1] = board[0][1];
+    dp[0][2] = board[0][2];
     sb.append(min());
     System.out.println(sb);
   }
