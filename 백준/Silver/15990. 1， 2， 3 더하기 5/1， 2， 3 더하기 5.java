@@ -38,11 +38,13 @@ public class Main {
       dp[i][3] %= MOD;
     }
 
-    for (int i = 0; i < A.length; i++) {
-      int sum = dp[A[i]][1] + dp[A[i]][2];
-      sum %= MOD;
-      sum +=  dp[A[i]][3];
-      System.out.println(sum % MOD);
+    for (int k : A) {
+      int sum = 0;
+      for (int j = 1; j <= 3; j++) {
+        sum += dp[k][j];
+        sum %= MOD;
+      }
+      System.out.println(sum);
     }
   }
 
