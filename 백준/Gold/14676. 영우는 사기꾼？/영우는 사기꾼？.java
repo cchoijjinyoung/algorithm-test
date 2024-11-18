@@ -12,10 +12,8 @@ import java.util.StringTokenizer;
 public class Main {
   static int N, M, K;
   static List<List<Integer>> build;
-  static List<List<Integer>> needs;
   static int[] indeg;
   static int[] counts;
-  static boolean[] canBuild;
 
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -26,10 +24,8 @@ public class Main {
     K = Integer.parseInt(st.nextToken());
 
     build = new ArrayList<>();
-    needs = new ArrayList<>();
     for (int i = 0; i <= N; i++) {
       build.add(new ArrayList<>());
-      needs.add(new ArrayList<>());
     }
 
     indeg = new int[N + 1];
@@ -38,11 +34,9 @@ public class Main {
       int from = Integer.parseInt(st.nextToken());
       int to = Integer.parseInt(st.nextToken());
       build.get(from).add(to);
-      needs.get(to).add(from);
       indeg[to]++;
     }
     counts = new int[N + 1];
-    canBuild = new boolean[N + 1];
 
     for (int i = 0; i < K; i++) {
       st = new StringTokenizer(br.readLine());
