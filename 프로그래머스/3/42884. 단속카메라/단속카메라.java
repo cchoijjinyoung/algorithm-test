@@ -2,15 +2,24 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] routes) {
-        Arrays.sort(routes, (o1, o2) -> o1[1] - o2[1]);
-        int location = routes[0][1];
-        int answer = 1;
+        int answer = 0;
+        Arrays.sort(routes, (r1, r2) -> r1[0] - r2[0]);
         
+        answer++;
+        int beforeIn = routes[0][0];
+        int beforeOut = routes[0][1];
         for (int i = 1; i < routes.length; i++) {
-            if (routes[i][0] > location) {
+            int in = routes[i][0];
+            int out = routes[i][1];
+            
+            if (in > beforeOut) {
+                beforeIn = in;
+                beforeOut = out;
                 answer++;
-                location = routes[i][1];
+                continue;
             }
+            beforeIn = Math.max(beforeIn, in);
+            beforeOut = Math.min(beforeOut, out);
         }
         return answer;
     }
