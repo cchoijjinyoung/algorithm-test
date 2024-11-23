@@ -32,16 +32,14 @@ public class Main {
 
             if (down >= 0) {
               int update_min = Math.min(min, down);
-              int update_max = Math.max(max, down);
-              dp[len][down][update_min][update_max] += dp[len - 1][last][min][max];
-              dp[len][down][update_min][update_max] %= MOD;
+              dp[len][down][update_min][max] += dp[len - 1][last][min][max];
+              dp[len][down][update_min][max] %= MOD;
             }
 
             if (up <= 9) {
-              int update_min = Math.min(min, up);
               int update_max = Math.max(max, up);
-              dp[len][up][update_min][update_max] += dp[len - 1][last][min][max];
-              dp[len][up][update_min][update_max] %= MOD;
+              dp[len][up][min][update_max] += dp[len - 1][last][min][max];
+              dp[len][up][min][update_max] %= MOD;
             }
           }
         }
