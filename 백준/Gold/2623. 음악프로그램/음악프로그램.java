@@ -56,10 +56,10 @@ public class Main {
       N--;
 
       for (int next : graph.get(cur)) {
-        if (indeg[next] == 0) {
-          System.out.println(0);
-          return;
-        }
+//        if (indeg[next] == 0) {
+//          System.out.println(0);
+//          return;
+//        }
         if (indeg[next] > 0) {
           indeg[next]--;
           if (indeg[next] == 0) {
