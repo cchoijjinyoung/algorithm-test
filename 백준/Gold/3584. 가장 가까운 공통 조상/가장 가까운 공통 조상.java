@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 public class Main {
   static int T, N;
   static int node1, node2;
+  static int[] parents;
   static List<List<Integer>> tree;
 
   static void input() throws IOException {
@@ -23,13 +24,15 @@ public class Main {
 
     for (int i = 0; i < T; i++) {
       N = Integer.parseInt(br.readLine());
+      parents = new int[N + 1];
       initializeTree();
 
       for (int j = 0; j < N - 1; j++) {
         st = new StringTokenizer(br.readLine());
         int parent = Integer.parseInt(st.nextToken());
         int child = Integer.parseInt(st.nextToken());
-        tree.get(child).add(parent);
+        parents[child] = parent;
+        // tree.get(child).add(parent);
       }
 
       st = new StringTokenizer(br.readLine());
@@ -57,8 +60,12 @@ public class Main {
     while (!q.isEmpty()) {
       int cur = q.poll();
 
-      if (tree.get(cur).isEmpty()) continue;
-      int parent = tree.get(cur).get(0);
+      // 현재 노드가 루트 노드면 continue;
+      if (parents[cur] == 0) {
+        continue;
+      }
+
+      int parent = parents[cur];
       if (set.contains(parent)) {
         System.out.println(parent);
         return;
