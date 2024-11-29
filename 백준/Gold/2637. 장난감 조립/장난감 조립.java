@@ -19,7 +19,7 @@ public class Main {
   static int[][] needs;
   static List<List<int[]>> legos;
   static List<Integer> baseParts;
-
+  static StringBuilder sb;
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st;
@@ -76,23 +76,15 @@ public class Main {
     }
 
     // 필요한 기본부품 수 출력
+    StringBuilder sb = new StringBuilder();
     for (int basePart : baseParts) {
-      System.out.println(basePart + " " + needs[N][basePart]);
+      sb.append(basePart).append(" ").append(needs[N][basePart]).append('\n');
     }
+    System.out.println(sb);
   }
 
   public static void main(String[] args) throws Exception {
     input();
     pro();
-  }
-}
-
-class Part {
-  int number;
-  int count;
-
-  Part(int number, int count) {
-    this.number = number;
-    this.count = count;
   }
 }
