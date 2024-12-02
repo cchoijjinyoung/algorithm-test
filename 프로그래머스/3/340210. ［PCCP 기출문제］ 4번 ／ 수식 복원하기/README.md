@@ -1,6 +1,6 @@
 # [level 3] [PCCP 기출문제] 4번 / 수식 복원하기 - 340210 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/340210#qna) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/340210) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 12월 02일 12:00:30
+2024년 12월 02일 12:00:54
 
 ### 문제 설명
 
