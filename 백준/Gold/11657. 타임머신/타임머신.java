@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 
 /**
  * 타임머신 : 골드 4
+ * 1반 -> 모든 노드(음의 사이클이 있을 시 -1)
  */
 public class Main {
   static int N, M;
