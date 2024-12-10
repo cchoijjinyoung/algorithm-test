@@ -74,9 +74,7 @@ public class Main {
       }
     }
 
-    if (isSame(A, B) && isSame(firstPressA, B)) {
-      System.out.println(Math.min(count, firstPressCount));
-    } else if (isSame(A, B)) {
+    if (isSame(A, B)) {
       System.out.println(count);
     } else if (isSame(firstPressA, B)) {
       System.out.println(firstPressCount);
