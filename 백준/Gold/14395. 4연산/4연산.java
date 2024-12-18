@@ -42,6 +42,9 @@ public class Main {
         }
         sb.append(op);
         
+        if (next > T) {
+          continue;
+        }
         if (set.contains(next)) {
           continue;
         }
