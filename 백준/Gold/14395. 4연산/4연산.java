@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,8 +12,9 @@ import java.util.StringTokenizer;
  */
 public class Main {
   static long S, T;
-  static char[] ops = {'*', '+', '-', '/'};
+  static char[] ops = {'*', '+'};
   static Set<Long> set = new HashSet<>();
+  static Queue<Info> q = new LinkedList<>();
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st = new StringTokenizer(br.readLine());
@@ -24,33 +24,29 @@ public class Main {
   }
 
   static String bfs() {
-    set.add(S);
-    Queue<Info> q = new LinkedList<>();
-    q.add(new Info(S, ""));
     while (!q.isEmpty()) {
       Info info = q.poll();
       long num = info.num;
-      for (int i = 0; i < 4; i++) {
-        StringBuilder command = new StringBuilder(info.command);
+      String command = info.command;
+      if (num == T) {
+        return command;
+      }
+      for (int i = 0; i < 2; i++) {
+        StringBuilder sb = new StringBuilder(info.command);
         char op = ops[i];
         long next = 0;
         if (op == '*') {
           next = num * num;
         } else if (op == '+') {
           next = num + num;
-        } else if (op == '/') {
-          if (num == 0) continue;
-          next = 1;
         }
-        command.append(op);
-        if (next == T) {
-          return command.toString();
-        }
+        sb.append(op);
+        
         if (set.contains(next)) {
           continue;
         }
         set.add(next);
-        q.add(new Info(next, command.toString()));
+        q.add(new Info(next, sb.toString()));
       }
     }
     return "-1";
@@ -61,6 +57,11 @@ public class Main {
       System.out.println(0);
       return;
     }
+    q.add(new Info(S * S, "*"));
+    q.add(new Info(S + S, "+"));
+    q.add(new Info(1, "/"));
+    set.add(S);
+    set.add(1L);
     System.out.println(bfs());
   }
 
