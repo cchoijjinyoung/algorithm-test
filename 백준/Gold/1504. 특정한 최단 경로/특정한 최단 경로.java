@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -85,8 +84,8 @@ public class Main {
       System.out.println(-1);
       return;
     }
-    long root1 = v1dist[1] + v1dist[v2] + v2dist[N];
-    long root2 = v2dist[1] + v1dist[v2] + v1dist[N];
+    int root1 = v1dist[1] + v1dist[v2] + v2dist[N];
+    int root2 = v2dist[1] + v1dist[v2] + v1dist[N];
 
     System.out.println(Math.min(root1, root2));
   }
