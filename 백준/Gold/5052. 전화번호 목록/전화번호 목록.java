@@ -29,7 +29,7 @@ public class Main {
   static void pro() {
     Set<String> set = new HashSet<>();
     for (String call : calls) {
-      for (int i = 1; i <= call.length(); i++) {
+      for (int i = 1; i < call.length(); i++) {
         String sub = call.substring(0, i);
         if (set.contains(sub)) {
           System.out.println("NO");
