@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,13 +38,15 @@ public class Main {
     return parent[x] = find(parent[x]);
   }
 
-  static void union(int x, int y) {
+  static boolean union(int x, int y) {
     x = find(x);
     y = find(y);
 
     if (x != y) {
       parent[x] = y;
+      return true;
     }
+    return false;
   }
 
   static void pro() {
@@ -52,12 +55,9 @@ public class Main {
       int from = node.from;
       int to = node.to;
 
-      if (find(from) == find(to)) {
-        continue;
+      if (union(from, to)) {
+        total += node.w;
       }
-
-      union(node.from, node.to);
-      total += node.w;
     }
     System.out.println(total);
   }
