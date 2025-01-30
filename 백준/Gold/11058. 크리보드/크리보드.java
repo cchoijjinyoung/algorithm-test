@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +19,7 @@ public class Main {
       System.out.println(N);
       return;
     }
-    
+      
     for (int i = 1; i <= 6; i++) {
       dp[i] = i;
     }
