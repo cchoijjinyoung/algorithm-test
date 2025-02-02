@@ -1,13 +1,6 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.TreeSet;
 
 public class Main {
   static String A, B;
