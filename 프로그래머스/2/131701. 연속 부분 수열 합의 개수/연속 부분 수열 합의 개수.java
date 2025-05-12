@@ -2,36 +2,29 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] elements) {
-        int answer = 0;
         Set<Integer> set = new HashSet<>();
         
-        for (int i = 0; i < elements.length; i++) {
+        int sum = elements[0];
+        set.add(sum);
+        for (int i = 1; i < elements.length; i++) {
             set.add(elements[i]);
+            sum += elements[i];
+            set.add(sum);
         }
         
-        for (int lt = 0; lt < elements.length; lt++) {
-            int rt = lt + 1;
-            int sum = elements[lt];
-            
-            while (lt != rt % elements.length) {
-                sum += elements[rt % elements.length];
-                set.add(sum);
-                rt++;
+        for (int i = 1; i < elements.length; i++) {
+            int start = elements[i];
+            for (int j = i + 1; j < elements.length; j++) {
+                int add = elements[j];
+                start += add;
+                set.add(start);
+            }
+            for (int j = 0; j < i; j++) {
+                start += elements[j];
+                set.add(start);
             }
         }
         
-        for (int lt = 0; lt < elements.length; lt++) {
-            int rt = lt - 1;
-            int sum = elements[lt];
-            
-            while (lt != ((rt + elements.length) % elements.length)) {
-                sum += elements[(rt + elements.length) % elements.length];
-                set.add(sum);
-                rt--;
-            }
-        }
-        
-        answer = set.size();
-        return answer;
+        return set.size();
     }
 }
