@@ -46,6 +46,7 @@ public class Main {
     long result = 0;
     int len = target.length();
 
+    // 999a
     for (int i = 0; i < len; i++) {
       char c = target.charAt(i);
       int number = convertingInt(c);
@@ -56,7 +57,7 @@ public class Main {
   }
 
   public static int convertingInt(char c) {
-    if (c <= 9) return c - '0';
+    if (c <= '9') return c - '0';
     return c - 'a' + 10;
   }
 
