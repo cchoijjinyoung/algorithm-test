@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,43 +7,39 @@ import java.util.StringTokenizer;
 
 public class Main {
   static int N, M;
-  static int[] A;
-  static Map<Integer, Integer> map = new HashMap();
-
-  static void input() throws IOException {
+  static int[] jinyoung, cards;
+  public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st;
 
     N = Integer.parseInt(br.readLine());
+    jinyoung = new int[N];
     st = new StringTokenizer(br.readLine());
     for (int i = 0; i < N; i++) {
-      int number = Integer.parseInt(st.nextToken());
-      map.put(number, map.getOrDefault(number, 0) + 1);
+      jinyoung[i] = Integer.parseInt(st.nextToken());
     }
 
     M = Integer.parseInt(br.readLine());
-    A = new int[M];
+    cards = new int[M];
     st = new StringTokenizer(br.readLine());
     for (int i = 0; i < M; i++) {
-      A[i] = Integer.parseInt(st.nextToken());
+      cards[i] = Integer.parseInt(st.nextToken());
     }
+
+    solve();
   }
 
-  static void pro() {
+  public static void solve() {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int card : jinyoung) {
+      map.put(card, map.getOrDefault(card, 0) + 1);
+    }
+
     StringBuilder sb = new StringBuilder();
-    for (int key : A) {
-      if (map.containsKey(key)) {
-        sb.append(map.get(key)).append(' ');
-      } else {
-        sb.append(0).append(' ');
-      }
+    for (int card : cards) {
+      sb.append(map.getOrDefault(card, 0));
+      sb.append(" ");
     }
     System.out.println(sb.toString());
-  }
-
-  public static void main(String[] args) throws Exception {
-    input();
-    pro();
-
   }
 }
