@@ -7,69 +7,64 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-/**
- * 호석사우루스 : 골드2
- */
 public class Main {
-  static int N, M, Sx, Sy, Ex, Ey;
-  static int min = Integer.MAX_VALUE;
+  static int N, M;
+  static int[] S, E;
   static int[][] board;
-  static boolean[][][] visited;
-
-  static int[] dx = new int[]{-1, 1, 0, 0}; // for (i = 0 ~ 4) // 상하좌우
-  static int[] dy = new int[]{0, 0, -1, 1};
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st = new StringTokenizer(br.readLine());
 
     N = Integer.parseInt(st.nextToken());
     M = Integer.parseInt(st.nextToken());
+    S = new int[2];
+    E = new int[2];
     st = new StringTokenizer(br.readLine());
-    Sx = Integer.parseInt(st.nextToken()) - 1;
-    Sy = Integer.parseInt(st.nextToken()) - 1;
-    Ex = Integer.parseInt(st.nextToken()) - 1;
-    Ey = Integer.parseInt(st.nextToken()) - 1;
-
+    S[0] = Integer.parseInt(st.nextToken()) - 1;
+    S[1] = Integer.parseInt(st.nextToken()) - 1;
+    E[0] = Integer.parseInt(st.nextToken()) - 1;
+    E[1] = Integer.parseInt(st.nextToken()) - 1;
     board = new int[N][M];
-
     for (int i = 0; i < N; i++) {
       st = new StringTokenizer(br.readLine());
       for (int j = 0; j < M; j++) {
         board[i][j] = Integer.parseInt(st.nextToken());
       }
     }
-    visited = new boolean[N][M][3];
+  }
+
+  static void pro() {
+    bfs();
   }
 
   static void bfs() {
-    PriorityQueue<int[]> q = new PriorityQueue<>((n1, n2) -> n1[3] - n2[3]);
-    q.add(new int[]{Sx, Sy, 1, 0});
-    visited[Sx][Sy][1] = true;
+    boolean[][][] visited = new boolean[N][M][3];
+    int[] dx = {1, -1, 0, 0};
+    int[] dy = {0, 0, 1, -1};
+    Queue<int[]> q = new PriorityQueue<>((e1, e2) -> e1[2] - e2[2]);
+    q.offer(new int[]{S[0], S[1], 0, 1});
 
     while (!q.isEmpty()) {
-      int[] poll = q.poll();
-      int x = poll[0];
-      int y = poll[1];
-      int type = poll[2];
-      int damage = poll[3];
+      int[] cur = q.poll();
+      int moveCount = cur[3];
 
-      // type = 0
-      int idx = 0;
-      int repeat = 4;
-      if (type == 1) { // 상, 하
-        repeat = 2;
-      } else if (type == 2) { // 좌, 우
-        idx = 2;
+      if (cur[0] == E[0] && cur[1] == E[1]) {
+        System.out.println(cur[2]);
+        return;
       }
 
-      for (int i = idx; i < repeat; i++) {
-        int nx = x + dx[i];
-        int ny = y + dy[i];
+      int d = 0;
+      int repeat = 4;
 
-        if (nx == Ex && ny == Ey) {
-          min = Math.min(min, damage);
-          continue;
-        }
+      if (moveCount % 3 == 1) {
+        repeat = 2;
+      } else if (moveCount % 3 == 2) {
+        d = 2;
+      }
+
+      for (int i = d; i < repeat; i++) {
+        int nx = cur[0] + dx[i];
+        int ny = cur[1] + dy[i];
 
         if (nx < 0 || ny < 0 || nx > N - 1 || ny > M - 1) {
           continue;
@@ -79,19 +74,14 @@ public class Main {
           continue;
         }
 
-        if (visited[nx][ny][(type + 1) % 3]) {
-          continue;
-        }
+        if (visited[nx][ny][moveCount % 3]) continue;
 
-        q.add(new int[]{nx, ny, (type + 1) % 3, damage + board[nx][ny]});
-        visited[nx][ny][(type + 1) % 3] = true;
+        int nextDamage = cur[2] + board[nx][ny];
+        q.offer(new int[]{nx, ny, nextDamage, moveCount + 1});
+        visited[nx][ny][moveCount % 3] = true;
       }
     }
-    System.out.println(min == Integer.MAX_VALUE ? -1 : min);
-  }
-
-  static void pro() {
-    bfs();
+    System.out.println(-1);
   }
 
   public static void main(String[] args) throws Exception {
