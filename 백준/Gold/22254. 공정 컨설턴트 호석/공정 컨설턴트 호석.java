@@ -1,13 +1,14 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
   static int N, X;
-  static int[] A;
-
+  static int[] times;
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st = new StringTokenizer(br.readLine());
@@ -15,38 +16,40 @@ public class Main {
     N = Integer.parseInt(st.nextToken());
     X = Integer.parseInt(st.nextToken());
 
-    A = new int[N];
+    times = new int[N];
     st = new StringTokenizer(br.readLine());
     for (int i = 0; i < N; i++) {
-      A[i] = Integer.parseInt(st.nextToken());
+      times[i] = Integer.parseInt(st.nextToken());
     }
   }
 
-  static boolean check(int count) {
-    PriorityQueue<Integer> pq = new PriorityQueue<>();
-    for (int i = 0; i < count; i++) {
-      pq.add(0);
+  static boolean check(int n) {
+    Queue<Integer> pq = new PriorityQueue<>((x1, x2) -> x1 - x2);
+    for (int i = 0; i < n; i++) {
+      pq.offer(times[i]);
     }
 
-    int idx = 0;
-    while (idx < N) {
-      int cur = pq.poll();
-      if (cur + A[idx] > X) return false;
-      pq.add(cur + A[idx++]);
+    for (int i = n; i < N; i++) {
+      int startTime = pq.poll();
+      int endTime = startTime + times[i];
+      if (endTime > X) {
+        return false;
+      }
+      pq.offer(endTime);
     }
-
     return true;
   }
 
   static void pro() {
-    int L = 1; int R = N; // 최대 공정 갯수가 N이기 때문
+    // 이분 탐색
+    int L = 1; int R = N;
 
-    while (L <= R) {
+    while (L < R) {
       int mid = (L + R) / 2;
-      if (!check(mid)) { // 현재 mid 값으로 X 시간 안에 가능해? 안되면 L = mid + 1;
-        L = mid + 1;
+      if (check(mid)) {
+        R = mid;
       } else {
-        R = mid - 1;
+        L = mid + 1;
       }
     }
     System.out.println(L);
@@ -55,6 +58,5 @@ public class Main {
   public static void main(String[] args) throws Exception {
     input();
     pro();
-
   }
 }
