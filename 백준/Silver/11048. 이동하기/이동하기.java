@@ -42,9 +42,9 @@ public class Main {
           dp[i][j] = Math.max(dp[i][j], dp[i][j - 1] + map[i][j]);
         }
 
-        if (i > 0 && j > 0) {
-          dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - 1] + map[i][j]);
-        }
+//        if (i > 0 && j > 0) {
+//          dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - 1] + map[i][j]);
+//        }
       }
     }
     System.out.println(dp[N - 1][M - 1]);
