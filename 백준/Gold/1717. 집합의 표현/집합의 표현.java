@@ -8,6 +8,7 @@ public class Main {
   static int N, M;
   static int[] parent;
   static int[][] query;
+  static StringBuilder sb = new StringBuilder();
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st = new StringTokenizer(br.readLine());
@@ -42,6 +43,7 @@ public class Main {
         print(a, b);
       }
     }
+    System.out.println(sb);
   }
 
   static void union(int a, int b) {
@@ -62,9 +64,11 @@ public class Main {
 
   static void print(int a, int b) {
     if (find(a) == find(b)) {
-      System.out.println("YES");
+      sb.append("YES");
+      sb.append("\n");
     } else {
-      System.out.println("NO");
+      sb.append("NO");
+      sb.append("\n");
     }
   }
 
