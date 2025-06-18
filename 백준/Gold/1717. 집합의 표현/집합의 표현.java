@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 
 public class Main {
   static int N, M;
-  static int[] root;
+  static int[] parent;
   static int[][] query;
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,7 +14,7 @@ public class Main {
 
     N = Integer.parseInt(st.nextToken());
     M = Integer.parseInt(st.nextToken());
-    root = new int[N + 1];
+    parent = new int[N + 1];
     query = new int[M][3];
 
     for (int i = 0; i < M; i++) {
@@ -28,7 +28,7 @@ public class Main {
 
   static void pro() {
     for (int i = 1; i <= N; i++) {
-      root[i] = i;
+      parent[i] = i;
     }
 
     for (int i = 0; i < query.length; i++) {
@@ -45,19 +45,19 @@ public class Main {
   }
 
   static void union(int a, int b) {
-    // arr[a]의 값, arr[b]의 값을 도출
-    // arr[a]가 a랑 다르면 계속 반복
+    if (a == b) return;
+
     int aRoot = find(a);
     int bRoot = find(b);
 
-    root[bRoot] = root[aRoot];
+    parent[bRoot] = parent[aRoot];
   }
 
   static int find(int number) {
-    while (root[number] != number) {
-      number = root[number];
-    }
-    return number;
+    if (number == parent[number]) return number;
+    int root = find(parent[number]);
+    parent[number] = root;
+    return root;
   }
 
   static void print(int a, int b) {
