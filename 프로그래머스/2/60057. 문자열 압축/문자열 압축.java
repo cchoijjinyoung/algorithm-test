@@ -1,33 +1,32 @@
 class Solution {
     public int solution(String s) {
-        int len = s.length();
-        int answer = len;
-        int min = Integer.MAX_VALUE;
-        int repeat = 1;
+        int answer = s.length();
         
-        // i는 잘라야할 길이
-        for (int i = 1; i <= len / 2; i++) {
-            int result = 0;
-            String cur = s.substring(0, i);
-            
-            for (int start = i; start <= len; start += i) {
-                int end = Math.min(start + i, len);
-                String next = s.substring(start, end);
-                
-                if (cur.equals(next)) {
-                    repeat++;
-                } else {
-                    if (repeat > 1) {
-                        result += String.valueOf(repeat).length();
-                    }
-                    result += i;
-                    cur = next;
-                    repeat = 1;
-                }
-            }
-            result += cur.length();
-            answer = Math.min(answer, result);
+        for (int i = 1; i <= s.length() / 2; i++) {
+            answer = Math.min(answer, check(s, s.length(), i));
         }
         return answer;
+    }
+    
+    public int check(String s, int len, int diff) {
+        int count = 1;
+        StringBuilder result = new StringBuilder();
+        String base = s.substring(0, diff);
+        for (int i = diff; i <= len; i += diff) {
+            int endIdx = Math.min(i + diff, len);
+            String compare = s.substring(i, endIdx);
+            if (base.equals(compare)) {
+                count++;
+            } else {
+                if (count >= 2) {
+                    result.append(count);
+                }
+                result.append(base);
+                base = compare;
+                count = 1;
+            }
+        }
+        result.append(base);
+        return result.length();
     }
 }
