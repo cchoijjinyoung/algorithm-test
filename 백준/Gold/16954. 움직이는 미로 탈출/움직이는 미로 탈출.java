@@ -58,15 +58,10 @@ public class Main {
         if (nx < 0 || ny < 0 || nx > 7 || ny > 7) {
           continue;
         }
-
+        
+        // 가고자 하는 곳에 벽이 있다면,
         if (nx - second >= 0) {
           if (board[nx - second][ny] == '#') {
-            continue;
-          }
-        }
-
-        if (nx - ns >= 0) {
-          if (board[nx - ns][ny] == '#') {
             continue;
           }
         }
