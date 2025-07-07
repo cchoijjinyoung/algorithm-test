@@ -35,7 +35,7 @@ public class Main {
   static void pro() {
     int ai = 0;
     int bi = 0;
-    while (!A.isEmpty() && !B.isEmpty()) {
+    while (true) {
       while (!A.isEmpty()) {
         int index = A.peek()[1];
         if (index < ai) {
