@@ -80,10 +80,13 @@ public class Main {
         }
       }
     }
-    System.out.println(result.size());
+
+    StringBuilder sb = new StringBuilder();
+    sb.append(result.size()).append('\n');
     for (int i : result) {
-      System.out.print(i + " ");
+      sb.append(i).append(' ');
     }
+    System.out.println(sb);
   }
 
   public static void main(String[] args) throws Exception {
