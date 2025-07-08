@@ -25,7 +25,8 @@ public class Main {
 
     for (int i = 4; i <= N; i++) {
       for (int j = 1; j <= K; j++) {
-        dp[i][j] = (dp[i - 2][j - 1] % MOD + dp[i - 1][j] % MOD) % MOD;
+        // i개 중 j개를 선택하는 방법 = 첫번째 색상을 선택한 경우(N - 2개 에서 K - 1개 선택) + 첫번째 색상을 선택하지 않은 경우(N - 1개 에서 K개 선택)
+        dp[i][j] = (dp[i - 2][j - 1] + dp[i - 1][j]) % MOD;
       }
     }
     System.out.println(dp[N][K]);
