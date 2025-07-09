@@ -24,22 +24,14 @@ public class Main {
     }
 
     int result = 0;
-    while (true) {
-      int a = 0; int b = 0;
-      if (!pq.isEmpty()) {
-        a = pq.poll();
-      }
-
-      if (!pq.isEmpty()) {
-        b = pq.poll();
-      } else {
-        System.out.println(result);
-        return;
-      }
-
-      result += a + b;
-      pq.add(a + b);
+    while (pq.size() > 1) {
+      int a = pq.poll();
+      int b = pq.poll();
+      int sum = a + b;
+      result += sum;
+      pq.add(sum);
     }
+    System.out.println(result);
   }
 
   public static void main(String[] args) throws Exception {
