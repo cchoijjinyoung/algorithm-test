@@ -13,7 +13,6 @@ public class Main {
   static int N, M, K;
   static Map<List<Integer>, Integer> map = new HashMap<>();
   static Map<Integer, Integer> countMap = new HashMap<>();
-
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st = new StringTokenizer(br.readLine());
