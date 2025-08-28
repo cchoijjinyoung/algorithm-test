@@ -34,7 +34,7 @@ public class Main {
           break;
         }
         graph.get(from).add(to);
-        graph.get(to).add(from);  
+        graph.get(to).add(from);
       }
     }
 
@@ -69,7 +69,7 @@ public class Main {
       for (int next : graph.get(cur[0])) {
         if (visited[next]) continue;
         count[next]++;
-        int size = graph.get(next).size() % 2 == 0 ? graph.get(next).size() / 2 : graph.get(next).size() / 2 + 1;
+        int size = (graph.get(next).size() + 1) / 2;
         if (count[next] >= size) {
           visited[next] = true;
           result[next] = cur[1] + 1;
@@ -77,9 +77,12 @@ public class Main {
         }
       }
     }
+
+    StringBuilder sb = new StringBuilder();
     for (int i = 1; i <= N; i++) {
-      System.out.println(result[i]);
+      sb.append(result[i]).append(" ");
     }
+    System.out.println(sb);
   }
 
   public static void main(String[] args) throws Exception {
