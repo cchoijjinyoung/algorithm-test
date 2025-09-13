@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,6 +6,7 @@ import java.util.StringTokenizer;
 public class Main {
   static int G, P;
   static int[] arr;
+  static int count;
   static int[] parent;
   static void input() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -14,7 +14,6 @@ public class Main {
     G = Integer.parseInt(br.readLine());
     P = Integer.parseInt(br.readLine());
     arr = new int[P];
-
     for (int i = 0; i < P; i++) {
       arr[i] = Integer.parseInt(br.readLine());
     }
@@ -26,35 +25,32 @@ public class Main {
   }
 
   static void pro() {
-    int answer = 0;
-    for (int i = 0; i < P; i++) {
-      int g = arr[i];
-      int emptyGate = find(g);
-
-      if (emptyGate == 0) {
-        break;
+    // 1234로 만들고, 도킹 시 -1을 바라보게 한다.
+    for (int airplane : arr) {
+      if (!union(airplane)) {
+        System.out.println(count);
+        return;
       }
-
-      answer++;
-      union(emptyGate, emptyGate - 1);
     }
-    System.out.println(answer);
+    System.out.println(count);
   }
 
-  static int find(int x) {
-    if (x == parent[x]) {
-      return x;
+  static int find(int a) {
+    if (a == parent[a]) {
+      return a;
     }
-    return parent[x] = find(parent[x]);
+    return parent[a] = find(parent[a]);
   }
 
-  static void union(int x, int y) {
-    x = find(x);
-    y = find(y);
-
-    if (x != y) {
-      parent[x] = y;
+  static boolean union(int a) {
+    int root = find(a);
+    if (root == 0) {
+      return false;
     }
+
+    parent[root] = find(root - 1);
+    count++;
+    return true;
   }
 
   public static void main(String[] args) throws Exception {
