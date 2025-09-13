@@ -27,7 +27,7 @@ public class Main {
   static void pro() {
     // 1234로 만들고, 도킹 시 -1을 바라보게 한다.
     for (int airplane : arr) {
-      if (!union(airplane)) {
+      if (check(airplane) == -1) {
         System.out.println(count);
         return;
       }
@@ -35,22 +35,17 @@ public class Main {
     System.out.println(count);
   }
 
-  static int find(int a) {
-    if (a == parent[a]) {
-      return a;
-    }
-    return parent[a] = find(parent[a]);
-  }
-
-  static boolean union(int a) {
-    int root = find(a);
-    if (root == 0) {
-      return false;
+  static int check(int a) {
+    if (a == 0) {
+      return -1;
     }
 
-    parent[root] = find(root - 1);
+    if (a != parent[a]) {
+      parent[a] = check(parent[a]);
+      return parent[a];
+    }
     count++;
-    return true;
+    return parent[a] = a - 1;
   }
 
   public static void main(String[] args) throws Exception {
